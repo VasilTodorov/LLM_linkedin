@@ -1,0 +1,18 @@
+[project]
+name = "LLM_linkedin"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Васил Тодоров", email = "vasilit@office365student.uni-sofia.bg"},
+]
+dependencies = ["google-genai>=1.46.0"]
+requires-python = "==3.13.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm.scripts]
+start = "pdm run src/main.py"
+
+# pytest
+[tool.pdm]
+distribution = false
