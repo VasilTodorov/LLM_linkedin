@@ -1,6 +1,7 @@
 from google import genai
 from pathlib import Path
-from typing import NamedTuple, Optional
+from typing import Optional
+from dataclasses import dataclass
 
 def summarize(text: str) -> str:
     client = genai.Client(api_key="AIzaSyBbXcPnaht_l7PvbbBiONK12fO--ipArAw")
@@ -9,10 +10,10 @@ def summarize(text: str) -> str:
         contents="summarize this text: " + text               
     )    
     return response.text # type: ignore
-
-class FileData(NamedTuple):
-        header: str
-        content: str
+@dataclass
+class FileData:
+    header: str
+    content: str
 
 def read_from_file(path: Path | str)-> Optional[FileData]:    
     file_path = Path(path)       
