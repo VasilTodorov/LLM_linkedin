@@ -43,6 +43,6 @@ The skills however are a good match
 ***********************************************
 
 ## Job description
-[Vasko paste linkedin job description here]
+[LINKEDIN_DATA]
 
 ## Report

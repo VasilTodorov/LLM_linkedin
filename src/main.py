@@ -28,7 +28,7 @@ def summarize(job_description: str) -> str:
     if not base_prompt:
         raise ValueError("Base prompt couldn't be read.")
     
-    prompt = base_prompt.content.replace("[Vasko paste linkedin job description here]", job_description.strip())
+    prompt = base_prompt.content.replace("[LINKEDIN_DATA]", job_description.strip())
 
     client = genai.Client(api_key="AIzaSyBbXcPnaht_l7PvbbBiONK12fO--ipArAw")
     response = client.models.generate_content(  # type: ignore
