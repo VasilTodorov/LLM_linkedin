@@ -3,13 +3,6 @@ from pathlib import Path
 from typing import Optional
 from dataclasses import dataclass
 
-def summarize(text: str) -> str:
-    client = genai.Client(api_key="AIzaSyBbXcPnaht_l7PvbbBiONK12fO--ipArAw")
-    response = client.models.generate_content(  # type: ignore
-        model="gemini-2.5-flash",
-        contents="summarize this text: " + text               
-    )    
-    return response.text # type: ignore
 @dataclass
 class FileData:
     header: str
@@ -28,9 +21,23 @@ def write_to_file(file_path: Path | str, content: str) -> None:
     path = Path(file_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
-    print(f"✅ Written to {path}")
+            
+
+def summarize(job_description: str) -> str:
+    base_prompt = read_from_file(r"D:\\workspace\\Python\\Training\\LLM_linkedin\\prompts\\JobPrompt_1.md")
+    if not base_prompt:
+        raise ValueError("Base prompt couldn't be read.")
     
-    
+    prompt = base_prompt.content.replace("[Vasko paste linkedin job description here]", job_description.strip())
+
+    client = genai.Client(api_key="AIzaSyBbXcPnaht_l7PvbbBiONK12fO--ipArAw")
+    response = client.models.generate_content(  # type: ignore
+        model="gemini-2.5-flash",
+        contents=prompt               
+    )  
+    if not response.text:
+        raise ValueError("API key not provided. Set GOOGLE_API_KEY in your environment.")  
+    return response.text 
 
 def summarize_files_in_folder(input_folder: str, output_folder: str):
     input_folder_path = Path(input_folder)
@@ -54,6 +61,7 @@ def summarize_files_in_folder(input_folder: str, output_folder: str):
 
             output_path = output_folder_path / data.header
             write_to_file(output_path, summary)
+            print(f"✅ Written to {output_path}")
 
     print("✨ All files summarized successfully!")
 
